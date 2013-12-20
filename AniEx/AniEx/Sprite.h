@@ -71,6 +71,11 @@ public : CSprite(std::wstring fileName)
 	void ClearDraw() {m_ipRenderTarget->Clear();}
 	void EndDraw() {m_ipRenderTarget->EndDraw();}
 
+	//회전한다
+	void RotateImage(D2D1_RECT_F dest);
+
+	void StartRotateAnimation(D2D1_RECT_F imagePosition);
+
 private:
 	CSprite* m_Sprite;
 	std::wstring m_fileName;
@@ -100,5 +105,6 @@ private:
 	int m_CurrentFrame;
 	D2D1_RECT_F destRect;
 
+	float m_rotateDegree;
 };
 

@@ -197,55 +197,41 @@ void CSprite::StartAnimation(D2D1_RECT_F imagePosition)
 	{
 		m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,imagePosition,1.0f,D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,m_Frame[m_CurrentFrame]);
 	}
+}
 
+void CSprite::RotateImage(D2D1_RECT_F dest)
+{
+	D2D1_MATRIX_3X2_F matRot = ::D2D1::Matrix3x2F::Rotation( 45.0f, 
+		D2D1::Point2F( 50.0f, 50.0f ) );
 
+	m_ipRenderTarget->SetTransform( matRot );                            
+	m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,  dest);
+}
 
-	//일단 되는 코드--------------------------------
-// 	if (m_AnimationState == S_PAUSE)
-// 	{
-// 		m_StartTime = GetTickCount();
-// 		m_CheckedTime = m_StartTime;
-// 		m_AnimationState = S_PLAY;
-// 	}
-// 	else
-// 	{
-// 		m_CurrentTime = GetTickCount();
-// 		DWORD interval = m_CurrentTime - m_CheckedTime;
-// 		if(interval>m_FrameSpeed)
-// 			{
-// 				m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,imagePosition,1.0f,D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,m_Frame[m_CurrentFrame++%m_TotalFrameNumber]);
-// 				m_CheckedTime = m_CurrentTime;
-// 		}
-// 		
-// 		else
-// 			m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,imagePosition,1.0f,D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,m_Frame[m_CurrentFrame%m_TotalFrameNumber]);
-// 
-// 	}
-	//----------------------------------------------------------------
+void CSprite::StartRotateAnimation( D2D1_RECT_F imagePosition )
+{
+	if (m_AnimationState == S_PAUSE)
+	{
+		m_AnimationState = S_PLAY;
+		m_CheckedTime = GetTickCount();
+		m_rotateDegree = 0.0f;
+	}
 
-	//m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,imagePosition,1.0f,D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,m_Frame[1]);
-// 	if (m_AnimationState == S_PAUSE)
-// 	{
-// 		m_StartTime = GetTickCount();
-// 		m_CheckedTime = m_StartTime;
-// 		m_AnimationState = S_PLAY;
-// 	}
-// 
-// 	m_CurrentTime	 = GetTickCount();
-// 	DWORD interval = m_CurrentTime - m_CheckedTime;
-// 
-// 	if ( interval > m_FrameSpeed && m_AnimationState == S_PLAY )
-// 	{		
-// 		m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,imagePosition,1.0f,D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,m_Frame[m_CurrentFrame++]);
-// 		m_CheckedTime = m_CurrentTime;	
-// 		//m_CurrentFrame = (m_CurrentFrame+1)%m_TotalFrameNumber;
-// 		m_CurrentFrame %= m_TotalFrameNumber;
-// 
-// 		if (m_CurrentFrame == m_TotalFrameNumber-1 && m_LoopType == S_LT_ONCE )
-// 			m_AnimationState = S_STOP;
-// 	}
-// 	else 
-// 	{
-// 		m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,destRect,1.0f,D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,m_Frame[m_CurrentFrame]);
-// 	}
+	m_CurrentTime = GetTickCount();
+	DWORD interval = m_CurrentTime - m_CheckedTime;
+
+	if (interval>m_FrameSpeed)
+	{
+		m_rotateDegree += 10.0f;
+		D2D1_MATRIX_3X2_F matRot = ::D2D1::Matrix3x2F::Rotation( m_rotateDegree, 
+			D2D1::Point2F( 50.0f, 50.0f ) );
+
+		m_ipRenderTarget->SetTransform( matRot );                            
+		m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,  imagePosition);
+		m_CheckedTime = m_CurrentTime;
+	}
+	else
+	{
+		m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,  imagePosition);
+	}
 }

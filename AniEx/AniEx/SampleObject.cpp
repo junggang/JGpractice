@@ -21,16 +21,17 @@ void CSampleObject::CreateSources()
 		m_sprite->SetLoop(S_LT_ONCE);
 	}
 
-	dest.left = 100.0f;
-	dest.right = 200.0f;
-	dest.top = 100.0f;
-	dest.bottom = 200.0f;
+	dest.left = 0.0f;
+	dest.right = 100.0f;
+	dest.top = 0.0f;
+	dest.bottom = 100.0f;
 }
 
 void CSampleObject::Render()
 {
 	m_sprite->BeginDraw();
 	m_sprite->ClearDraw();
-	m_sprite->StartAnimation(dest);
+	//m_sprite->StartAnimation(dest);
+	m_sprite->StartRotateAnimation(dest);
 	m_sprite->EndDraw();
 }
