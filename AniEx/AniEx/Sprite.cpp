@@ -222,7 +222,7 @@ void CSprite::StartRotateAnimation( D2D1_RECT_F imagePosition )
 
 	if (interval>m_FrameSpeed)
 	{
-		m_rotateDegree += 10.0f;
+		m_rotateDegree += 5.0f;
 		D2D1_MATRIX_3X2_F matRot = ::D2D1::Matrix3x2F::Rotation( m_rotateDegree, 
 			D2D1::Point2F( 50.0f, 50.0f ) );
 
@@ -233,5 +233,45 @@ void CSprite::StartRotateAnimation( D2D1_RECT_F imagePosition )
 	else
 	{
 		m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,  imagePosition);
+	}
+}
+
+void CSprite::MoveAnimation( D2D1_RECT_F startPosition,D2D1_RECT_F endPosition)
+{
+	float verticalDistance = (endPosition.top-startPosition.top)/(m_FrameSpeed/10);
+	float horizontalDistance = (endPosition.left - startPosition.left)/(m_FrameSpeed/10);
+
+	if (m_AnimationState == S_PAUSE)
+	{
+		m_AnimationState = S_PLAY;
+		m_CheckedTime = GetTickCount();
+		m_horizontalPoint = 0.0f;
+		m_verticalPoint = 0.0f;
+	}
+
+	m_CurrentTime = GetTickCount();
+	DWORD interval = m_CurrentTime - m_CheckedTime;
+
+	if (interval > m_FrameSpeed && m_horizontalPoint < endPosition.left - startPosition.left)
+	{
+		m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,
+			D2D1::RectF
+			(startPosition.left+m_horizontalPoint
+			,startPosition.top+m_verticalPoint,
+			startPosition.right+m_horizontalPoint,
+			startPosition.bottom+m_verticalPoint));
+
+		m_CheckedTime = m_CurrentTime;
+		m_horizontalPoint += horizontalDistance;
+		m_verticalPoint += verticalDistance;
+	}
+	else
+	{
+		m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,
+			D2D1::RectF
+			(startPosition.left+m_horizontalPoint
+			,startPosition.top+m_verticalPoint,
+			startPosition.right+m_horizontalPoint,
+			startPosition.bottom+m_verticalPoint));
 	}
 }

@@ -47,7 +47,7 @@ public : CSprite(std::wstring fileName)
 	bool LoadAnimationImage();
 	
 	//프레임 속도를 정한다. (프레임당 초를 입력)
-	void SetFrameSpeed(float second) { m_FrameSpeed = (DWORD)second*1000;}
+	void SetFrameSpeed(float second) { m_FrameSpeed = second*1000;}
 
 	//원래 이미지를 가로, 세로 길이를 정해 자른다.-> 프레임 개수가 알아서 계산됨
 	void CutFrames(float width, float height);
@@ -62,8 +62,13 @@ public : CSprite(std::wstring fileName)
 	//imagePosition위치에서 에니메이션을 재생한다.
 	void StartAnimation(D2D1_RECT_F imagePosition);
 
+	//회전시킨다.
+	void StartRotateAnimation(D2D1_RECT_F imagePosition);
+
+	//이동시킨다.
+	void MoveAnimation(D2D1_RECT_F startPosition,D2D1_RECT_F endPosition);
+
 	void PauseAnimation() { m_AnimationState = S_PAUSE; }
-	
 	void StopAnimation() { m_AnimationState = S_STOP; }
 
 	//렌더관련
@@ -74,7 +79,6 @@ public : CSprite(std::wstring fileName)
 	//회전한다
 	void RotateImage(D2D1_RECT_F dest);
 
-	void StartRotateAnimation(D2D1_RECT_F imagePosition);
 
 private:
 	CSprite* m_Sprite;
@@ -106,5 +110,8 @@ private:
 	D2D1_RECT_F destRect;
 
 	float m_rotateDegree;
+	float m_horizontalPoint;
+	float m_verticalPoint;
+
 };
 
