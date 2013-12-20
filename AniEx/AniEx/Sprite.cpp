@@ -176,7 +176,7 @@ void CSprite::StartAnimation(D2D1_RECT_F imagePosition)
 		}
 		else
 		{
-			m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,imagePosition,1.0f,D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,m_Frame[m_CurrentFrame]);
+			m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,imagePosition,1.0f,D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,m_Frame[m_CurrentFrame%m_TotalFrameNumber]);
 		}
 	}
 
@@ -189,13 +189,13 @@ void CSprite::StartAnimation(D2D1_RECT_F imagePosition)
 		}
 		else
 		{
-			m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,imagePosition,1.0f,D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,m_Frame[m_CurrentFrame]);
+			m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,imagePosition,1.0f,D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,m_Frame[m_CurrentFrame%m_TotalFrameNumber]);
 		}
 	}
 	
 	else
 	{
-		m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,imagePosition,1.0f,D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,m_Frame[m_CurrentFrame]);
+		m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,imagePosition,1.0f,D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,m_Frame[m_CurrentFrame%m_TotalFrameNumber]);
 	}
 }
 
