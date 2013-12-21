@@ -117,6 +117,5 @@ private:
 	float m_verticalPoint;
 
 	float m_CurrentScale;
-
 };
 

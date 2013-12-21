@@ -284,31 +284,46 @@ void CSprite::ScaleAnimation(D2D1_RECT_F imagePosition, float destScale )
 		m_CheckedTime = GetTickCount();
 		m_CurrentScale = 1.0f;
 	}
-	float changeScale;
-	if (destScale > m_CurrentScale)
-		changeScale = (1-destScale)/20;
+
+	if( m_AnimationState == S_PLAY)
+	{
+		m_CurrentTime = GetTickCount();
+		DWORD interval = m_CurrentTime - m_CheckedTime;
+
+		if (interval> m_FrameSpeed && destScale > 1.0f)
+		{
+			D2D1_MATRIX_3X2_F matScale = ::D2D1::Matrix3x2F::Scale( D2D1::Size(m_CurrentScale,m_CurrentScale), 
+				D2D1::Point2F( imagePosition.left+(imagePosition.right-imagePosition.left)/2, imagePosition.top +(imagePosition.bottom-imagePosition.top)/2) );
+
+			m_ipRenderTarget->SetTransform( matScale );                            
+			m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,  imagePosition);
+			m_CheckedTime = m_CurrentTime;
+			m_CurrentScale += 0.05f;
+
+			if (destScale < m_CurrentScale)
+				m_AnimationState = S_STOP;
+		}
+		else if ( interval> m_FrameSpeed && destScale < 1.0f)
+		{
+			D2D1_MATRIX_3X2_F matScale = ::D2D1::Matrix3x2F::Scale( D2D1::Size(m_CurrentScale,m_CurrentScale), 
+				D2D1::Point2F( 50.0f, 50.0f ) );
+
+			m_ipRenderTarget->SetTransform( matScale );                            
+			m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,  imagePosition);
+			m_CheckedTime = m_CurrentTime;
+			m_CurrentScale -= 0.05f;
+
+			if (destScale > m_CurrentScale)
+				m_AnimationState = S_STOP;
+		}
+		else
+		{
+			m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,  imagePosition);
+		}
+	}
 	else
-		changeScale = - (1-destScale)/20;
-
-	m_CurrentTime = GetTickCount();
-	DWORD interval = m_CurrentTime - m_CheckedTime;
-
-	if (interval > m_FrameSpeed && destScale!=m_CurrentScale)
-	{
-		D2D1_MATRIX_3X2_F matScale = ::D2D1::Matrix3x2F::Scale( D2D1::Size(m_CurrentScale,m_CurrentScale), 
-			D2D1::Point2F( 50.0f, 50.0f ) );
-
-		m_ipRenderTarget->SetTransform( matScale );                            
-		m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,  imagePosition);
-		m_CheckedTime = m_CurrentTime;
-		m_CurrentScale += changeScale;
-	}
-	else if (destScale == m_CurrentScale)
 	{
 		m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,  imagePosition);
 	}
-	else
-	{
-		m_ipRenderTarget->DrawBitmap(m_LoadedBitmap,  imagePosition);
-	}
+	
 }

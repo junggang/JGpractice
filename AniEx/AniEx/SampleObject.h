@@ -10,7 +10,9 @@ public:
 	void Render();
 
 private:
+	CSprite* m_sprite0;
 	CSprite* m_sprite;
+
 	D2D1_RECT_F dest;
 };
 
