@@ -32,8 +32,9 @@ void CSampleObject::Render()
 {
 	m_sprite->BeginDraw();
 	m_sprite->ClearDraw();
-	m_sprite->StartAnimation(dest);
+	//m_sprite->StartAnimation(dest);
 	//m_sprite->StartRotateAnimation(dest);
 	//m_sprite->MoveAnimation(dest,D2D1::RectF(500.0f,0.0f,600.0f,100.0f));
+	m_sprite->ScaleAnimation(dest,0.5f);
 	m_sprite->EndDraw();
 }

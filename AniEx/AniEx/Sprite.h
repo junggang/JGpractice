@@ -67,6 +67,9 @@ public : CSprite(std::wstring fileName)
 
 	//이동시킨다.
 	void MoveAnimation(D2D1_RECT_F startPosition,D2D1_RECT_F endPosition);
+	
+	//크기를 조정한다.
+	void ScaleAnimation(D2D1_RECT_F imagePosition,float destScale);
 
 	void PauseAnimation() { m_AnimationState = S_PAUSE; }
 	void StopAnimation() { m_AnimationState = S_STOP; }
@@ -112,6 +115,8 @@ private:
 	float m_rotateDegree;
 	float m_horizontalPoint;
 	float m_verticalPoint;
+
+	float m_CurrentScale;
 
 };
 
